@@ -80,6 +80,19 @@ jobs:
     displayName: 'dotnet build $(buildConfiguration)'
   - script: ./run-tests.sh
     displayName: 'run tests'    
+
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'pack'
+      projects: './src/*/*.csproj'
+      versioningScheme: 'off'
+      outputDir: '$(Build.ArtifactStagingDirectory)'
+      packagesToPack: '**/*.csproj'
+      arguments: '-c $(buildConfiguration) --include-symbols --output $(Build.ArtifactStagingDirectory)'
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/*.trx'
     condition: succeededOrFailed()
@@ -88,14 +101,3 @@ jobs:
       testResultsFiles: '**/*.trx' 
       buildConfiguration: 
       buildPlatform: 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: WebApp'
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: 'WebApp'
-      publishLocation: 'Container'
-      targetPath: '$(Build.BuildId)/$(Build.BuildNumber)'
-      containerUrl: '$(ContainerRegistryName).azurecr.io'
-      containerName: '$(Build.DefinitionName)-$(Build.BuildNumber)'
-      azureSubscription: '$(AzureSubscriptionName)'
-      appType: 'webapp'
