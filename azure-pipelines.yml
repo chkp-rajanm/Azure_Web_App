@@ -88,7 +88,6 @@ jobs:
       testResultsFiles: '**/*.trx' 
       buildConfiguration: 
       buildPlatform: 
-steps:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: WebApp'
     inputs:
