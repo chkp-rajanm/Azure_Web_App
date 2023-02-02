@@ -95,7 +95,3 @@ jobs:
       artifactName: 'WebApp'
       publishLocation: 'Container'
       targetPath: '$(Build.BuildId)/$(Build.BuildNumber)'
-      containerUrl: '$(ContainerRegistryName).azurecr.io'
-      containerName: '$(Build.DefinitionName)-$(Build.BuildNumber)'
-      azureSubscription: '$(AzureSubscriptionName)'
-      appType: 'webapp'
